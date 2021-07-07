@@ -4,6 +4,7 @@ import { useStyles } from "./UI/App.styles";
 import WithRedux from "./pages/withRedux";
 import WithoutRedux from "./pages/withoutRedux";
 import WithContext from "./pages/withContext";
+import TodoContextProvider from "./context/todoContext";
 import { Provider } from "react-redux";
 import { store } from "./redux-store/rootReducer";
 import { newTheme } from "./UI/todo.styles";
@@ -50,8 +51,10 @@ const App = (props) => {
               <WithRedux />
             </Provider>
           )}
-          {(nav === 1) && <WithoutRedux/>}
-          {(nav === 2) && <WithContext/>}
+          {nav === 1 && <WithoutRedux />}
+          {nav === 2 && (
+            <WithContext/>
+          )}
         </ThemeProvider>
       </Container>
     </Fragment>

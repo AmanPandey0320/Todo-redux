@@ -1,20 +1,23 @@
 import { Button, TextField } from "@material-ui/core";
-import { useState, Fragment } from "react";
+import { useState, Fragment,useContext } from "react";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import useStyles from "../UI/todo.styles";
-import useStore from "../custom-store/store";
+import { TodoContext } from '../context/todoContext'
 const Todo = (props) => {
   const [task, setTask] = useState("");
   const classes = useStyles();
-  const [store, dispatch] = useStore();
+const store = useContext(TodoContext);
 
   const handleAdd = (event) => {
-    dispatch("ADD_TODO", task);
+    store.addTodo(task);
     setTask("");
   };
   const handleTodo = (done, id) => (e) => {
-    const type = done ? "UNDONE_TODO" : "DONE_TODO";
-    dispatch(type, id);
+    if(done){
+        store.undo(id);
+    }else{
+        store.done(id);
+    }
   };
   return (
     <Fragment>

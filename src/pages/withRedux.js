@@ -1,30 +1,24 @@
 import { Button, TextField } from "@material-ui/core";
-import { useState, Fragment,useContext } from "react";
+import { useState, Fragment } from "react";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
-import { TodoContext } from '../context/todoContext'
 import { useDispatch, useSelector } from "react-redux";
 import useStyles from "../UI/todo.styles";
 const Todo = (props) => {
   const [task, setTask] = useState("");
   const classes = useStyles();
-  const store = useContext(TodoContext)
+  const store = useSelector((state) => state.todo);
   const dispatch = useDispatch();
 
   const handleAdd = (event) => {
-    store.addTodo(task)
+    dispatch({ type: "ADD_TODO", data: task });
     setTask("");
   };
   const handleTodo = (done, id) => (e) => {
-    // const type = done ? "UNDONE_TODO" : "DONE_TODO";
-    if(done){
-      store.undo(id);
-    }else{
-      store.done(id);
-    }
+    const type = done ? "UNDONE_TODO" : "DONE_TODO";
+    dispatch({ type, id });
   };
   return (
     <Fragment>
-      <span>With Redux store</span>
       <div className={classes.addtask}>
         <TextField
           value={task}
@@ -36,7 +30,7 @@ const Todo = (props) => {
         </Button>
       </div>
       <div className={classes.list}>
-        {store.todo.map((todo, index) => {
+        {store.map((todo, index) => {
           return (
             <div className={classes.listItem} key={todo.id}>
               <span>
